@@ -1,0 +1,62 @@
+# Guides for ManageF
+
+
+
+## Building
+
+Clone this repository inside a GOPATH.
+These instructions will use the example GOPATH of "$HOME/Projects/fm/core" but you can use whatever you want. Just change the first line of the below instructions to use your GOPATH.
+
+
+[source,shell]
+----
+    
+export GOPATH=$HOME/Projects/fm/core
+mkdir -p $GOPATH
+cd $GOPATH
+mkdir -p src/github.com/managef
+cd src/github.com/managef
+git clone git@github.com:managef/api
+git clone git@github.com:managef/worker
+git clone git@github.com:managef/models
+export PATH=${PATH}:${GOPATH}/bin
+
+----
+
+* Install Glide - the Go dependency management tool that ManageF uses to build itself
+
+[source,shell]
+----
+cd ${GOPATH}/src/github.com/managef/api
+make dep-install
+cd ${GOPATH}/src/github.com/managef/worker
+make dep-install
+----
+
+* Tell the dependency manager tool to update the ManageF dependencies
+[NOTE]
+You should only run this command if you add, remove, or modify a dependency. If you are simply git cloning and building from source, you should skip this step.
+
+[source,shell]
+----
+cd ${GOPATH}/src/github.com/managef/api
+make dep-update
+cd ${GOPATH}/src/github.com/managef/worker
+make dep-update
+----
+
+* Build manageF
+
+[source,shell]
+----
+cd ${GOPATH}/src/github.com/managef/api
+make build
+----
+
+
+* Deploy in OpenShift
+
+Create NameSpace
+----
+oc new-project manage-f
+----
