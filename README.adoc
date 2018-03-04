@@ -60,3 +60,32 @@ Create NameSpace
 ----
 oc new-project manage-f
 ----
+
+* Deploy minikube
+
+You need to have minikube start (https://github.com/kubernetes/minikube)
+
+Create Namespace manage-f
+----
+kubectl create namespace manage-f
+----
+Deploy
+----
+make minikube-docker
+make k8s-deploy
+----
+
+See pods
+----
+kubectl get pods --namespace manage-f
+----
+
+See endpoints
+----
+kubectl get endpoints --namespace manage-f
+----
+
+See all resources
+----
+kubectl get all --namespace manage-f
+----
