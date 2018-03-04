@@ -23,27 +23,14 @@ export PATH=${PATH}:${GOPATH}/bin
 
 ----
 
-* Install Glide - the Go dependency management tool that ManageF uses to build itself
+* Install Glide and update - the Go dependency management tool that ManageF uses to build itself
 
 [source,shell]
 ----
-cd ${GOPATH}/src/github.com/managef/api
-make dep-install
-cd ${GOPATH}/src/github.com/managef/worker
-make dep-install
+cd ${GOPATH}/src/github.com/managef/guides
+make install
 ----
 
-* Tell the dependency manager tool to update the ManageF dependencies
-[NOTE]
-You should only run this command if you add, remove, or modify a dependency. If you are simply git cloning and building from source, you should skip this step.
-
-[source,shell]
-----
-cd ${GOPATH}/src/github.com/managef/api
-make dep-update
-cd ${GOPATH}/src/github.com/managef/worker
-make dep-update
-----
 
 * Build manageF
 
@@ -56,7 +43,20 @@ make build
 
 * Deploy in OpenShift
 
+
+----
+oc login -u system:admin
+----
 Create NameSpace
 ----
 oc new-project manage-f
 ----
+
+Execute
+----
+make install build docker openshift-deploy
+----
+* Install GRPC
+
+Install protoc-3.5.1-<os>_<arch.zip in https://github.com/google/protobuf/releases
+
