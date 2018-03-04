@@ -35,8 +35,8 @@ spec:
   ports:
   - name: tcp
     protocol: TCP
-    port: 80
-    targetPort: 8080
+    port: 50051
+    targetPort: 50051
   selector:
     app: worker
 ---
@@ -81,6 +81,9 @@ spec:
       - image: ${IMAGE_NAME}:${IMAGE_VERSION}
         name: api
         command:
+        - "/opt/managef/managef_api"
+        - "-v"
+        - "${VERBOSE_MODE}"
         ports:
           - containerPort: 8080
         env:
@@ -118,8 +121,11 @@ spec:
       - image: ${IMAGE_WORKER_NAME}:${IMAGE_WORKER_VERSION}
         name: worker
         command:
+        - "/opt/managef/managef_worker"
+        - "-v"
+        - "${VERBOSE_MODE}"
         ports:
-          - containerPort: 8080
+          - containerPort: 50051
         env:
         - name: ACTIVE_NAMESPACE
           valueFrom:
