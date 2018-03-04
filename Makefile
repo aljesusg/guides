@@ -42,6 +42,11 @@ docker:
 	cd ${GOPATH}/src/github.com/managef/api && make docker
 	cd ${GOPATH}/src/github.com/managef/worker && make docker
 
+minikube-docker:
+	@echo Build MiniKube Docker...
+	cd ${GOPATH}/src/github.com/managef/api && make minikube-docker
+	cd ${GOPATH}/src/github.com/managef/worker && make minikube-docker
+
 .openshift-validate:
 	@oc get project ${NAMESPACE} > /dev/null
 
@@ -54,3 +59,23 @@ openshift-deploy: openshift-undeploy
 openshift-undeploy: .openshift-validate
 	@echo Undeploying from OpenShift project ${NAMESPACE}
 	oc delete all,secrets,sa,templates,configmaps,deployments,clusterroles,clusterrolebindings,services --selector=project=mf -n ${NAMESPACE}
+
+openshift-reload-image: .openshift-validate
+	@echo Refreshing image in OpenShift project ${NAMESPACE}
+	oc delete pod --selector=project=mf -n ${NAMESPACE}
+
+.k8s-validate:
+	@kubectl get namespace ${NAMESPACE} > /dev/null
+
+k8s-deploy: k8s-undeploy
+	@echo Deploying to Kubernetes namespace ${NAMESPACE}
+	kubectl create -f deploy/kubernetes/managef-configmap.yaml -n ${NAMESPACE}
+	cat deploy/kubernetes/managef.yaml | IMAGE_WORKER_NAME=${DOCKER_WORKER_NAME} IMAGE_WORKER_VERSION=${DOCKER_WORKER_VERSION} IMAGE_NAME=${DOCKER_NAME} IMAGE_VERSION=${DOCKER_VERSION} NAMESPACE=${NAMESPACE} VERBOSE_MODE=${VERBOSE_MODE} envsubst | kubectl create -n ${NAMESPACE} -f -
+
+k8s-undeploy:
+	@echo Undeploying from Kubernetes namespace ${NAMESPACE}
+	kubectl delete all,secrets,sa,configmaps,deployments,ingresses,clusterroles,clusterrolebindings --selector=project=mf -n ${NAMESPACE}
+
+k8s-reload-image: .k8s-validate
+	@echo Refreshing image in Kubernetes namespace ${NAMESPACE}
+	kubectl delete pod --selector=project=mf -n ${NAMESPACE}
