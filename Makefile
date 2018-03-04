@@ -25,6 +25,7 @@ all: build
 
 build:
 	@echo Building...
+	cd ${GOPATH}/src/github.com/managef/models && make build
 	cd ${GOPATH}/src/github.com/managef/api && make build
 	cd ${GOPATH}/src/github.com/managef/worker && make build
 
@@ -32,7 +33,9 @@ build:
 install:
 	@echo Installing...
 	cd ${GOPATH}/src/github.com/managef/api && make install
-	cd ${GOPATH}/src/github.com/managef/worker && make install
+	cd ${GOPATH}/src/github.com/managef/worker && make dep-install dep-update
+	cd ${GOPATH}/src/github.com/managef/models && make dep-install dep-update
+
 
 docker:
 	@echo Build Docker...
