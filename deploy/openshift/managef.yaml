@@ -34,11 +34,7 @@ spec:
   ports:
   - name: tcp
     protocol: TCP
-    port: 50051
-<<<<<<< HEAD
     targetPort: 50051
-=======
->>>>>>> update
   selector:
     app: worker
 ---
@@ -84,11 +80,8 @@ spec:
         name: api
         command:
         - "/opt/managef/managef_api"
-<<<<<<< HEAD
-=======
         - "-config"
         - "/api-configuration/config.yaml"
->>>>>>> update
         - "-v"
         - "${VERBOSE_MODE}"
         ports:
