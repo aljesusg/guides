@@ -50,7 +50,7 @@ metadata:
 spec:
   backend:
     serviceName: api
-    servicePort: 8080
+    servicePort: 20001
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment

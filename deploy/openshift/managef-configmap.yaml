@@ -2,8 +2,14 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: api
-  annotations:
-    openshift.io/display-name: ManageF-Api
   labels:
     app: api
     project: mf
+data:
+  config.yaml: |
+    server:
+      port: 20001
+      static_content_root_directory: /opt/managef/console
+      credentials:
+        username: admin
+        password: admin
