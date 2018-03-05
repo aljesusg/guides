@@ -19,6 +19,7 @@ spec:
   - name: tcp
     protocol: TCP
     port: 20001
+    targetPort: 20001
   selector:
     app: api
 ---
@@ -34,6 +35,7 @@ spec:
   ports:
   - name: tcp
     protocol: TCP
+    port: 50051
     targetPort: 50051
   selector:
     app: worker
@@ -132,7 +134,7 @@ spec:
         - "-v"
         - "${VERBOSE_MODE}"
         ports:
-          - containerPort: 50051
+          - containerPort: 8080
         env:
         - name: ACTIVE_NAMESPACE
           valueFrom:
