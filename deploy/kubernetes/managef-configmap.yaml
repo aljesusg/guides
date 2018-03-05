@@ -7,3 +7,11 @@ metadata:
   labels:
     app: api
     project: mf
+data:
+  config.yaml: |
+    server:
+      port: 20001
+      static_content_root_directory: /opt/managef/console
+      credentials:
+        username: admin
+        password: admin

@@ -14,6 +14,9 @@ DOCKER_VERSION ?= dev
 DOCKER_WORKER_VERSION ?=dev
 DOCKER_TAG = ${DOCKER_NAME}:${DOCKER_VERSION}
 
+CONSOLE_VERSION ?= latest
+CONSOLE_LOCAL_DIR ?= ../../../../ui
+
 # Indicates the log level the app will use when started.
 # <4=INFO
 #  4=DEBUG
@@ -32,10 +35,8 @@ build:
 
 install:
 	@echo Installing...
-	cd ${GOPATH}/src/github.com/managef/api && make install
+	cd ${GOPATH}/src/github.com/managef/api && make dep-install dep-update
 	cd ${GOPATH}/src/github.com/managef/worker && make dep-install dep-update
-	cd ${GOPATH}/src/github.com/managef/models && make dep-install dep-update
-
 
 docker:
 	@echo Build Docker...
